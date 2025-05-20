@@ -1,21 +1,28 @@
 package uk.nhs.hackathon.ctrlaltelite.localserver.outbound;
 
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestClient;
 import uk.nhs.hackathon.ctrlaltelite.localserver.core.TxPathways;
 
-@Service
+@Repository
 public class RestApiCentralAdapter {
 
-    private final WebClient webClient;
+    private final RestClient restClient;
 
-    public RestApiCentralAdapter(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:3000").build();
+    public RestApiCentralAdapter(RestClient.Builder restClientBuilder) {
+        restClient = restClientBuilder
+                .baseUrl("http://localhost:8080")
+                .defaultHeader("Accept", "application/json")
+                .defaultHeader("Content-Type", "application/json")
+                .build();
     }
 
     public TxPathways getPathwaysFromCentralServer() {
-        return (TxPathways) webClient.get()
-                .uri("/cache") // Replace with actual API endpoint
-                .retrieve();
+        return restClient.get()
+                .uri("/cache")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .body(TxPathways.class);
     }
 }

@@ -25,7 +25,7 @@ public class TxPathways implements Serializable {
     }
 
     // Todo: implement getter
-    public getQuestion(){
+    public void getQuestion(){
 
     }
 }
