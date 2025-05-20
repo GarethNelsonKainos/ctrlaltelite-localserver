@@ -12,17 +12,18 @@ import org.apache.logging.log4j.LogManager;
 public class Core {
     private final RestApiCentralAdapter adapter;
     private final InternalTriageEngine triageEngine;
-    private final Logger logger;
+    private final Logger logger = LogManager.getLogger(Core.class);
 
     public Core(RestApiCentralAdapter adapter, InternalTriageEngine triageEngine) {
         this.adapter = adapter;
         this.triageEngine = triageEngine;
         getAllPathwaysForCaching();
-        this.logger = LogManager.getLogger(Core.class);
     }
 
     public void getAllPathwaysForCaching() {
+        logger.info("Loading pathways cache from central server...");
         triageEngine.setPathways(adapter.getPathwaysFromCentralServer());
+        logger.info("Loading pathways cache from central server completed.");
     }
 
     public TriageResponse getNextQuestion(TriageRequest request) {
@@ -31,7 +32,7 @@ public class Core {
             return this.adapter.getNextQuestionFromServer(request);
         } catch (Exception E) {
             logger.info("Unable to get next question from central triage engine.");
-            logger.info("Use local triage question to get next question");
+            logger.info("Use local triage engine to get next question");
             return triageEngine.triage(request);
         }
     }
