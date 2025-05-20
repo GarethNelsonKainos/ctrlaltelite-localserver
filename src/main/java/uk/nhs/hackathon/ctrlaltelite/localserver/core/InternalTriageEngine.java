@@ -1,8 +1,6 @@
 package uk.nhs.hackathon.ctrlaltelite.localserver.core;
 
 import org.springframework.stereotype.Component;
-import uk.nhs.hackathon.ctrlaltelite.localserver.inbound.TriageDisposition;
-import uk.nhs.hackathon.ctrlaltelite.localserver.inbound.TriageQuestion;
 import uk.nhs.hackathon.ctrlaltelite.localserver.inbound.TriageRequest;
 import uk.nhs.hackathon.ctrlaltelite.localserver.inbound.TriageResponse;
 
@@ -37,10 +35,17 @@ public class InternalTriageEngine {
                     int jump = Integer.parseInt(jumpId);
                     q = pathway.getOrderNumbersToQuestions().get(jump);
                 } catch (NumberFormatException e) {
-                    return new TriageDisposition(jumpId, dispositions.get(jumpId));
+                    TriageResponse response = new TriageResponse();
+                    response.setDxCode(jumpId);
+                    response.setDxDescription(dispositions.get(jumpId));
+                    return response;
                 }
             } else {
-                return new TriageQuestion(q.getId(), q.getWording(), convertAnswers(q.getAnswers()));
+                TriageResponse response = new TriageResponse();
+                response.setId(q.getId());
+                response.setWording(q.getWording());
+                response.setAnswers(convertAnswers(q.getAnswers()));
+                return response;
             }
         }
     }

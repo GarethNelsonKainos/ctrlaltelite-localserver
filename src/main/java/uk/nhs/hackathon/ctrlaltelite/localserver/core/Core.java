@@ -25,6 +25,7 @@ public class Core {
         try {
             return this.adapter.getNextQuestionFromServer(request);
         } catch (Exception E) {
+            E.printStackTrace();
             return triageEngine.triage(request);
         }
     }
