@@ -12,10 +12,9 @@ import java.util.Map;
 @Component
 public class InternalTriageEngine {
     private static final Map<String, String> dispositions = Map.of(
-            "DxGoToVet", "Self-referral to veterinary clinic",
-            "DxBlue", "Eye-hue privilege - enjoy life",
-            "DxBrown", "So basic",
-            "DxNA", "Self-referral to beautician for fake eye makeup"
+            "Dx011", "Emergency Ambulance Response",
+            "Dx111", "Handoff to 111",
+            "Dx001", "Referred to Primary Care for further assessment"
     );
 
     private TxPathways pathways;
@@ -26,7 +25,7 @@ public class InternalTriageEngine {
 
 
     public TriageResponse triage(TriageRequest request) {
-        TxPathway pathway = pathways.getPathways().get("PWDemo");
+        TxPathway pathway = pathways.getPathways().get("PWUnder5");
         int orderNumber = 0;
         TxQuestion q = pathway.getOrderNumbersToQuestions().get(orderNumber);
         while (true) {
