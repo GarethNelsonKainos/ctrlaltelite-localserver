@@ -1,6 +1,7 @@
 package uk.nhs.hackathon.ctrlaltelite.localserver.core;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import uk.nhs.hackathon.ctrlaltelite.localserver.inbound.TriageRequest;
 import uk.nhs.hackathon.ctrlaltelite.localserver.inbound.TriageResponse;
 import uk.nhs.hackathon.ctrlaltelite.localserver.outbound.RestApiCentralAdapter;
@@ -21,8 +22,10 @@ public class Core {
     }
 
     public TriageResponse getNextQuestion(TriageRequest request) {
-        // Todo: Implement logic to retrieve next question
-
-        return triageEngine.triage(request);
+        try {
+            return this.adapter.getNextQuestionFromServer(request);
+        } catch (Exception E) {
+            return triageEngine.triage(request);
+        }
     }
 }
