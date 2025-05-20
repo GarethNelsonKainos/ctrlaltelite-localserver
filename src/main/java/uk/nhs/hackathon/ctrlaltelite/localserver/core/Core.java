@@ -25,7 +25,7 @@ public class Core {
         try {
             return this.adapter.getNextQuestionFromServer(request);
         } catch (Exception E) {
-            E.printStackTrace();
+            System.out.println("[WARN] Unable to contact central server - falling back on local triage engine");
             return triageEngine.triage(request);
         }
     }
